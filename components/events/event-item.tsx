@@ -2,6 +2,7 @@ import Link from "next/link"
 import { EventType } from "./event.types"
 import styles from "./event.module.scss"
 import Button from "../button"
+import { DateIcon, LocationIcon, RightArrowIcon } from "../icons"
 
 const EventItem = ({item}: {item: EventType}) => {
 
@@ -21,14 +22,19 @@ const EventItem = ({item}: {item: EventType}) => {
                 <div className={styles.summary}>
                     <h2>{title}</h2>
                     <div className={styles.date}>
+                        <DateIcon />
                         <time>{readableDate}</time>
                     </div>
                     <div className={styles.address}>
+                        <LocationIcon />
                         <address>{formattedAddress}</address>
                     </div>
                 </div>
                 <div className={styles.actions}>
-                    <Button link={exploreLink} >Explore Event</Button>
+                    <Button link={exploreLink} >
+                        <span>Explore Event</span>
+                        <span className={styles.icon} ><RightArrowIcon /></span>
+                    </Button>
                 </div>
             </div>
         </li>
