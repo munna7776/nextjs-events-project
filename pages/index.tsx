@@ -1,7 +1,14 @@
+import EventList from "../components/events/event-list"
+import { getFeaturedEvents } from "../utils"
 
+const Home = () => {
 
-export default function Home() {
+  const featuredEvents = getFeaturedEvents()
   return (
-    <div>Home</div>
+    <div>
+      <EventList items={featuredEvents} />
+    </div>
   )
 }
+
+export default Home
