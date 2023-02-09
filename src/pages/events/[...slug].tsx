@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
-import Button from "../../components/button";
-import ErrorAlert from "../../components/error-alert";
-import EventList from "../../components/events/event-list";
-import ResultsTitle from "../../components/events/results-title";
-import { getFilteredEvents } from "../../utils";
+import Button from "components/button";
+import ErrorAlert from "components/error-alert";
+import EventList from "components/events/event-list";
+import ResultsTitle from "components/events/results-title";
+import { getFilteredEvents } from "utils";
 
 const FilteredEvents = () => {
   const { query } = useRouter();

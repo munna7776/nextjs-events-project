@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
-import ErrorAlert from "../../components/error-alert";
+import ErrorAlert from "components/error-alert";
 import {
   EventContent,
   EventLogistics,
   EventSummary,
-} from "../../components/event-detail";
-import { getEventById } from "../../utils";
+} from "components/event-detail";
+import { getEventById } from "utils";
 
 const EventDetail = () => {
   const {

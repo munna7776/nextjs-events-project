@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
-import EventsSearch from "../../components/event-search"
-import EventList from "../../components/events/event-list"
-import {getAllEvents} from "../../utils"
+import EventList from "components/events/event-list"
+import {getAllEvents} from "utils"
+import EventsSearch from "components/event-search"
 
 const Events = () => {
     const events = getAllEvents()

@@ -1,5 +1,5 @@
-import EventList from "../components/events/event-list"
-import { getFeaturedEvents } from "../utils"
+import EventList from "components/events/event-list"
+import { getFeaturedEvents } from "utils"
 
 const Home = () => {
 
