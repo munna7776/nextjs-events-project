@@ -1,14 +1,22 @@
 import EventList from "components/events/event-list"
-import { getFeaturedEvents } from "utils"
+import { CLIENT_RENEG_LIMIT } from "tls"
+import { getFeaturedEvents } from "utils/api"
 
-const Home = () => {
+const Home = (props) => {
 
-  const featuredEvents = getFeaturedEvents()
   return (
     <div>
-      <EventList items={featuredEvents} />
+      <EventList items={props.featuredEvents} />
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const featuredEvents = await getFeaturedEvents()
+  return {
+    props: { featuredEvents },
+    revalidate: 1800
+  }
 }
 
 export default Home

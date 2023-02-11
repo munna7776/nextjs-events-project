@@ -1,17 +1,14 @@
-import { useRouter } from "next/router";
 import ErrorAlert from "components/error-alert";
 import {
   EventContent,
   EventLogistics,
   EventSummary,
 } from "components/event-detail";
-import { getEventById } from "utils";
+import { getAllEvents, getEventById } from "utils/api";
 
-const EventDetail = () => {
-  const {
-    query: { eventId },
-  } = useRouter();
-  const event = getEventById(eventId as string);
+const EventDetail = (props) => {
+  
+  const event = props.selectedEvent
 
   if (!event) {
     return (
@@ -35,5 +32,25 @@ const EventDetail = () => {
     </>
   );
 };
+
+export async function getStaticProps(context){
+  const eventId = context.params.eventId;
+  const selectedEvent = await getEventById(eventId)
+  return {
+    props: {
+      selectedEvent
+    },
+    revalidate: 30
+  }
+}
+
+export async function getStaticPaths() {
+  const events = await getAllEvents()
+  const paths = events.map(event => ({params: {eventId: event.id}}))
+  return {
+    paths,
+    fallback: false
+  }
+}
 
 export default EventDetail;

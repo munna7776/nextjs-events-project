@@ -1,31 +1,14 @@
-import { useRouter } from "next/router";
 import Button from "components/button";
 import ErrorAlert from "components/error-alert";
 import EventList from "components/events/event-list";
 import ResultsTitle from "components/events/results-title";
-import { getFilteredEvents } from "utils";
+import { getFilteredEvents } from "utils/api";
 
-const FilteredEvents = () => {
-  const { query } = useRouter();
-  const filteredData = query.slug;
+const FilteredEvents = (props) => {
 
-  // const events = getFilteredEvents()
+  const { hasError, events, date } = props;
 
-  if (!filteredData) {
-    return <p className="center">No Events Found...</p>;
-  }
-
-  const year = +filteredData[0];
-  const month = +filteredData[1];
-
-  if (
-    isNaN(year) ||
-    isNaN(month) ||
-    year > 2030 ||
-    year < 2021 ||
-    month < 1 ||
-    month > 12
-  ) {
+  if (hasError) {
     return (
       <>
         <ErrorAlert>
@@ -37,8 +20,6 @@ const FilteredEvents = () => {
       </>
     );
   }
-
-  const events = getFilteredEvents({ year, month });
 
   if (!events || events.length === 0) {
     return (
@@ -55,10 +36,43 @@ const FilteredEvents = () => {
 
   return (
     <>
-      <ResultsTitle date={new Date(year, month - 1)} />
+      <ResultsTitle date={new Date(date.year, date.month - 1)} />
       <EventList items={events} />
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  const {
+    params: { slug },
+  } = context;
+
+  const year = +slug[0];
+  const month = +slug[1];
+
+  if (
+    isNaN(year) ||
+    isNaN(month) ||
+    year > 2030 ||
+    year < 2021 ||
+    month < 1 ||
+    month > 12
+  ) {
+    return {
+      props: { hasError: true },
+    };
+  }
+
+  const events = await getFilteredEvents({ year, month });
+  return {
+    props: {
+      events,
+      date: {
+        year,
+        month,
+      },
+    },
+  };
+}
 
 export default FilteredEvents;
