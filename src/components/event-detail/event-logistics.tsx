@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { CLIENT_RENEG_LIMIT } from "tls";
 import { DateIcon, LocationIcon } from "../icons";
 import styles from "./event-logistics.module.scss";
@@ -23,7 +24,7 @@ const EventLogistics = (props: EventLogisticProps) => {
   return (
     <section className={styles.logistics}>
       <div className={styles.image}>
-        <img src={`/${image}`} alt={imageAlt} />
+        <Image src={`/${image}`} alt={imageAlt} width={300} height={300} />
       </div>
       <ul className={styles.list}>
         <LogisticsItem icon={DateIcon}>

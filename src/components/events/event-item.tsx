@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Image from "next/image"
 import { EventType } from "./event.types"
 import styles from "./event.module.scss"
 import Button from "../button"
@@ -17,7 +17,7 @@ const EventItem = ({item}: {item: EventType}) => {
     const exploreLink = `/events/${id}`
     return (
         <li className={styles.item}>
-            <img src={"/" + image} alt="image" />
+            <Image src={"/" + image} alt="image" width={250} height={160}  />
             <div className={styles.content}>
                 <div className={styles.summary}>
                     <h2>{title}</h2>
