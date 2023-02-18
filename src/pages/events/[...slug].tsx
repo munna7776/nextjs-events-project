@@ -1,10 +1,21 @@
 import Button from "components/button";
 import ErrorAlert from "components/error-alert";
 import EventList from "components/events/event-list";
+import { EventType } from "components/events/event.types";
 import ResultsTitle from "components/events/results-title";
+import { GetServerSideProps } from "next";
 import { getFilteredEvents } from "utils/api";
 
-const FilteredEvents = (props) => {
+interface FilteredEventProps {
+  hasError: boolean,
+  events: EventType[],
+  date: {
+    year: number,
+    month: number
+  }
+}
+
+const FilteredEvents = (props: FilteredEventProps) => {
 
   const { hasError, events, date } = props;
 
@@ -42,13 +53,12 @@ const FilteredEvents = (props) => {
   );
 };
 
-export async function getServerSideProps(context) {
-  const {
-    params: { slug },
-  } = context;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { params } = context;
+  const slugs = params?.slug as string[]
 
-  const year = +slug[0];
-  const month = +slug[1];
+  const year = +slugs[0];
+  const month = +slugs[1];
 
   if (
     isNaN(year) ||

@@ -1,8 +1,13 @@
 import EventList from "components/events/event-list"
-import { CLIENT_RENEG_LIMIT } from "tls"
+import { EventType } from "components/events/event.types"
+import { GetStaticProps } from "next"
 import { getFeaturedEvents } from "utils/api"
 
-const Home = (props) => {
+interface HomeProps{
+  featuredEvents: EventType[]
+}
+
+const Home = (props: HomeProps) => {
 
   return (
     <div>
@@ -11,7 +16,8 @@ const Home = (props) => {
   )
 }
 
-export async function getStaticProps() {
+
+export const getStaticProps: GetStaticProps = async() => {
   const featuredEvents = await getFeaturedEvents()
   return {
     props: { featuredEvents },

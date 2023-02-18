@@ -4,9 +4,11 @@ import {
   EventLogistics,
   EventSummary,
 } from "components/event-detail";
+import { EventType } from "components/events/event.types";
+import { GetStaticPaths, GetStaticProps } from "next";
 import { getAllEvents, getEventById } from "utils/api";
 
-const EventDetail = (props) => {
+const EventDetail = (props: { selectedEvent: EventType }) => {
   
   const event = props.selectedEvent
 
@@ -33,8 +35,9 @@ const EventDetail = (props) => {
   );
 };
 
-export async function getStaticProps(context){
-  const eventId = context.params.eventId;
+
+export const getStaticProps: GetStaticProps = async(context) => {
+  const eventId = context.params?.eventId as string;
   const selectedEvent = await getEventById(eventId)
   return {
     props: {
@@ -44,7 +47,7 @@ export async function getStaticProps(context){
   }
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
   const events = await getAllEvents()
   const paths = events.map(event => ({params: {eventId: event.id}}))
   return {

@@ -2,8 +2,10 @@ import { useRouter } from "next/router"
 import EventList from "components/events/event-list"
 import {getAllEvents} from "utils/api"
 import EventsSearch from "components/event-search"
+import { GetStaticProps } from "next"
+import { EventType } from "components/events/event.types"
 
-const Events = (props) => {
+const Events = (props: { events: EventType[] }) => {
     const { events } = props
     const {push} = useRouter()
 
@@ -20,7 +22,8 @@ const Events = (props) => {
     )
 }
 
-export async function getStaticProps() {
+
+export const getStaticProps: GetStaticProps = async () => {
     const events = await getAllEvents()
     return {
         props: { events },
