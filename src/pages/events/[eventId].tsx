@@ -5,6 +5,7 @@ import {
   EventSummary,
 } from "components/event-detail";
 import { EventType } from "components/events/event.types";
+import { Comments } from "components/news-letter";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { getAllEvents, getEventById } from "utils/api";
 
@@ -31,6 +32,7 @@ const EventDetail = (props: { selectedEvent: EventType }) => {
       <EventContent>
         <p>{event.description}</p>
       </EventContent>
+      <Comments />
     </>
   );
 };
