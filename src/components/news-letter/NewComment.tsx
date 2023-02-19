@@ -1,46 +1,60 @@
+import { emailRegex } from "consts";
 import React, { useRef, useState } from "react";
 import styles from "./new-comment.module.scss";
 
-const NewComment = (props: any) => {
-  const [isInvalid, setIsInvalid] = useState(false);
+type Comment = {
+  email: string,
+  name: string,
+  comment: string
+}
+
+interface NewCommentProps {
+  onAddComment: (comment: Comment) => Promise<any>
+}
+
+const NewComment = (props: NewCommentProps) => {
+  const [error, setError] = useState('');
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
 
-  function sendCommentHandler(event) {
+  function sendCommentHandler(event: React.FormEvent) {
     event.preventDefault();
 
     const enteredEmail = emailInputRef.current!.value;
     const enteredName = nameInputRef.current!.value;
     const enteredComment = commentInputRef.current!.value;
 
-    if (
-      !enteredEmail ||
-      enteredEmail.trim() === "" ||
-      !enteredEmail.includes("@") ||
-      !enteredName ||
-      enteredName.trim() === "" ||
-      !enteredComment ||
-      enteredComment.trim() === ""
-    ) {
-      setIsInvalid(true);
-      return;
+    if(enteredName.trim().length < 1) {
+      return setError("Please enter valid name!")
+    }
+    if(!enteredEmail.match(emailRegex)) {
+      return setError("Please enter valid email address!")
+    }
+    if(enteredComment.trim().length < 1) {
+      return setError("Please enter valid comment!")
     }
 
     props.onAddComment({
       email: enteredEmail,
       name: enteredName,
-      text: enteredComment,
+      comment: enteredComment,
+    }).then(data => {
+      if(data.message === "Comment successfully added!") {
+        emailInputRef.current!.value = ''
+        nameInputRef.current!.value = ''
+        commentInputRef.current!.value = ''
+      }
     });
   }
 
   return (
-    <form className={styles.form}>
+    <form className={styles.form} onSubmit={sendCommentHandler} >
       <div className={styles.row}>
         <div className={styles.control}>
           <label htmlFor="email">Your email</label>
-          <input type="email" id="email" ref={emailInputRef} />
+          <input type="text" id="email" ref={emailInputRef} />
         </div>
         <div className={styles.control}>
           <label htmlFor="name">Your name</label>
@@ -51,7 +65,7 @@ const NewComment = (props: any) => {
         <label htmlFor="comment">Your comment</label>
         <textarea id="comment" rows={5} ref={commentInputRef}></textarea>
       </div>
-      {isInvalid && <p>Please enter a valid email address and comment!</p>}
+      {error.length > 0 && <p className={styles.error} >{error}</p>}
       <button>Submit</button>
     </form>
   );

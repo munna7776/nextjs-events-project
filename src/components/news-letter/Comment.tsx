@@ -3,7 +3,13 @@ import styles from "./comment.module.scss"
 import CommentList from './CommentList';
 import NewComment from './NewComment';
 
-const Comment = (props: any) => {
+type Comment = {
+  name: string,
+  email: string,
+  comment: string
+}
+
+const Comment = (props: { eventId: string}) => {
     const { eventId } = props;
 
     const [showComments, setShowComments] = useState(false);
@@ -12,8 +18,18 @@ const Comment = (props: any) => {
       setShowComments((prevStatus) => !prevStatus);
     }
   
-    function addCommentHandler(commentData) {
-      // send data to API
+    async function addCommentHandler(commentData: Comment) {
+      const data = {...commentData, eventId}
+      console.log(data)
+      const res = await fetch('/api/addComment',{
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      const outputData = await res.json()
+      return outputData;
     }
   
     return (

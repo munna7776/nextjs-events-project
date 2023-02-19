@@ -32,7 +32,7 @@ const EventDetail = (props: { selectedEvent: EventType }) => {
       <EventContent>
         <p>{event.description}</p>
       </EventContent>
-      <Comments />
+      <Comments eventId={event.id} />
     </>
   );
 };
